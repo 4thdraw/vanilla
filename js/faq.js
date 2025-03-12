@@ -41,30 +41,37 @@ faqdom.innerHTML = faqtag;
 
 const faqlist = faqdom.querySelectorAll("dt");
 let count = 0;
-faqlist[count].classList.add("active");
 
-const autoopen = setInterval(()=>{
-    count++;
-    count %= faq.length;
+updateActiveClass(faqlist, count);
 
-    //모든 dt들의 active를 삭제하라
-    faqlist.forEach((ele, idx)=>{
-       ele.classList.remove("active");
-    })
-    faqlist[count].classList.add("active");   
 
-}, 3000);
+
 
 faqlist.forEach((ele, idx)=>{
     ele.addEventListener("click", function(){
         clearInterval(autoopen);
-        faqlist.forEach((eele)=>{
-            eele.classList.remove("active");
-        })
-        this.classList.add("active");
+        updateActiveClass(faqlist, idx );
     })
  })
 
+const autoopen = setInterval(() => {
+    count++;
+    count %= faq.length;
 
+    updateActiveClass(faqlist, count );
+
+}, 3000);
+
+// 다수객체 중 하나의 객체만 특정 클래스 주는 함수
+// faq템플릿 함수 제작
+function updateActiveClass(list, index, activeClass = "active") {
+    // 모든 항목에서 지정된 클래스 제거
+    list.forEach((ele) => {
+        ele.classList.remove(activeClass);
+    });
+
+    // 현재 항목에 지정된 클래스 추가
+    list[index].classList.add(activeClass);
+}
 
 })
