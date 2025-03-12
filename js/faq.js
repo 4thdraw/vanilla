@@ -1,3 +1,5 @@
+// 사용자와의 상호작용을 통해 FAQ 항목을 동적으로 표시하고, 
+// 시간에 따라 자동으로 변경되는 FAQ 뷰를 제공하는 것
 window.addEventListener("DOMContentLoaded",()=>{
     const faq = [
         {
@@ -29,48 +31,51 @@ for(x of faq){ // for으로 생선된 데이터 누적저장 +=
                 <strong>${x["dt"]}</strong>
                 <i class="bi bi-chevron-down"></i>
               </dt>
-              <dd  class="border-bottom py-3 bg-light">${x.dd}</dd>`;
+              <dd  class="border-bottom py-3 bg-light">${
+                x.dd.split("|").join("<br>")
+                //x.dd.split("|"): | 기호를 기준으로 배열이 됨
+                //join("<br>"): 분리된 배열을 <br> 태그로 연결하여 하나의 문자열
+            }</dd>`;
 }       
 
 
 faqdom.innerHTML = faqtag; 
-// dl에 누적된 데이터를 태그로 출력하기
-// 동적객체 출력완료
 
-//////////////////// 출력완성 ////////////
 
 const faqlist = faqdom.querySelectorAll("dt");
 let count = 0;
 
 updateActiveClass(faqlist, count);
 
-faqlist.forEach((ele, idx)=>{
-    ele.addEventListener("click", function(){
-        clearInterval(autoopen);
-        autoopen = setInterval(() => {
-            count++;
-            count %= faq.length;
-            updateActiveClass(faqlist, count );
-        }, 3000);
-        updateActiveClass(faqlist, idx );
-    })
- })
-
-const autoopen = setInterval(() => {
+//반드시 let으로 변경 삭제하고 다시 재저장을 해야하므로
+let autoopen = setInterval(() => {
     count++;
     count %= faq.length;
     updateActiveClass(faqlist, count );
 }, 3000);
 
-// 다수객체 중 하나의 객체만 특정 클래스 주는 함수
-// faq템플릿 함수 제작
+faqlist.forEach((ele, idx)=>{
+    ele.addEventListener("click", function(){
+        clearInterval(autoopen); // 즉시 자동롤링 삭제
+        count = idx; //중요 다시 자동롤링때 이어서 진행하기 위해서
+       
+        updateActiveClass(faqlist, count ); // 클릭시 바로진행
+
+         // 3초 대기시간내에 다른 클릭 없으면 다시 자동롤링 진행
+         autoopen = setInterval(() => {
+            count++;
+            count %= faq.length;
+            updateActiveClass(faqlist, count );
+        }, 3000);
+
+    })
+ })
+
 function updateActiveClass(list, index, activeClass = "active") {
-    // 모든 항목에서 지정된 클래스 제거
+
     list.forEach((ele) => {
         ele.classList.remove(activeClass);
-    });
-
-    // 현재 항목에 지정된 클래스 추가
+    });   
     list[index].classList.add(activeClass);
 }
 
