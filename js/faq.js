@@ -44,12 +44,14 @@ let count = 0;
 
 updateActiveClass(faqlist, count);
 
-
-
-
 faqlist.forEach((ele, idx)=>{
     ele.addEventListener("click", function(){
         clearInterval(autoopen);
+        autoopen = setInterval(() => {
+            count++;
+            count %= faq.length;
+            updateActiveClass(faqlist, count );
+        }, 3000);
         updateActiveClass(faqlist, idx );
     })
  })
@@ -57,9 +59,7 @@ faqlist.forEach((ele, idx)=>{
 const autoopen = setInterval(() => {
     count++;
     count %= faq.length;
-
     updateActiveClass(faqlist, count );
-
 }, 3000);
 
 // 다수객체 중 하나의 객체만 특정 클래스 주는 함수
