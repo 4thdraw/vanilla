@@ -1,0 +1,24 @@
+p, ul, li, dl, dt, dd, h1, h2, h3{
+    margin: 0;
+    padding: 0;
+}
+#faq{
+    dd{
+        display: none;
+    }
+    dt{
+        cursor: pointer;
+        &.active{
+          color:red;
+          cursor: default;
+          i{
+            &:before{
+                content: "\f286";
+            }
+          }
+        }
+        &.active + dd{
+            display: block;
+        }
+    }
+}

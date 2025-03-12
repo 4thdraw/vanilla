@@ -1,0 +1,1 @@
+﻿p,ul,li,dl,dt,dd,h1,h2,h3{margin:0;padding:0}#faq dd{display:none}#faq dt{cursor:pointer}#faq dt.active{color:red;cursor:default}#faq dt.active i:before{content:""}#faq dt.active+dd{display:block}
