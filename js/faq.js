@@ -39,16 +39,11 @@ faqdom.innerHTML = faqtag;
 
 //////////////////// 출력완성 ////////////
 
-const faqlist = document.querySelectorAll("#faq dt");
-//동적객체 dt들(여기서중요 여러개임) 저장해서 나열하기 _ 배열화
-// [순번]으로 접근 가능
-let count = 0; // 주기적으로 변하게 될 숫자변수
+const faqlist = faqdom.querySelectorAll("dt");
+let count = 0;
+faqlist[count].classList.add("active");
 
-faqlist[count].classList.add("active"); 
-// 첫번째 dt를 오픈
-
-//주기적으로 일어날 일
-setInterval(()=>{
+const autoopen = setInterval(()=>{
     count++;
     count %= faq.length;
 
@@ -58,7 +53,18 @@ setInterval(()=>{
     })
     faqlist[count].classList.add("active");   
 
-}, 3000) 
+}, 3000);
+
+faqlist.forEach((ele, idx)=>{
+    ele.addEventListener("click", function(){
+        clearInterval(autoopen);
+        faqlist.forEach((eele)=>{
+            eele.classList.remove("active");
+        })
+        this.classList.add("active");
+    })
+ })
+
 
 
 })
